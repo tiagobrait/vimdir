@@ -7,8 +7,6 @@
 
 "-VIM-PLUG----------------------------------------------------------------------
 call plug#begin()
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
@@ -27,6 +25,8 @@ Plug 'heavenshell/vim-jsdoc', {'for': 'javascript'}
 Plug 'burnettk/vim-angular', {'for': 'javascript'}
 Plug 'tpope/vim-rails', {'for': 'ruby'}
 Plug 'evanmiller/nginx-vim-syntax', {'for': 'nginx'}
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 "custom stuff
 Plug '~/.config/nvim/custom-tiagobrait'
 call plug#end()
@@ -39,8 +39,6 @@ call plug#end()
 "-------------------------------------------------------------------------------
 
 "-OPTIONS-----------------------------------------------------------------------
-"use vim settings instead of vi
-set nocompatible
 "disable modelines (yuck!)
 set modelines=0
 "much better identation settings
@@ -58,8 +56,6 @@ set noshowmode
 set showcmd
 "hide buffers
 set hidden
-"set cursorline
-set ttyfast
 "show 'line,column percetage' in the statusline
 set ruler
 "we can backspace over everything in insert mode
@@ -112,6 +108,7 @@ set nolinebreak
 "don't wait too much to complete when reading keycodes
 set ttimeoutlen=20
 set listchars=tab:▸\ ,eol:¬
+
 if has("gui_running")
   set guifont=Inconsolata\-dz\ for\ Powerline\ 10
   set guitablabel=%-0.12t%M
@@ -128,6 +125,8 @@ if has("gui_running")
   set background=dark
 else
   if $TERM == "linux"
+    let g:airline_left_sep='|'
+    let g:airline_right_sep='|'
     let g:airline_theme='solarized'
     set background=dark
   else
@@ -136,9 +135,6 @@ else
     let g:airline_theme="base16color"
     colorscheme base16-default-dark
     set background=dark
-    if $COLORTERM != ""
-      set t_Co=256
-    endif
   endif
 endif
 "-------------------------------------------------------------------------------
@@ -213,14 +209,14 @@ set wildignore+=migrations "Django migrations"
 set wildignore+=*.pyc "Python Object codes"
 set wildignore+=*.orig "Merge resolution files"
 "Rebember the last cursor position
-augroup line_return
-    au!
-    au BufReadPost *
-        \ if line("'\"") > 0 && line("'\"") <= line("$") |
-        \ execute 'normal! g`"zvzz' |
-        \ endif
-augroup END
-"-------------------------------------------------------------------------------
+"augroup line_return
+    "au!
+    "au BufReadPost *
+        "\ if line("'\"") > 0 && line("'\"") <= line("$") |
+        "\ execute 'normal! g`"zvzz' |
+        "\ endif
+"augroup END
+""-------------------------------------------------------------------------------
 
 "-VARS--------------------------------------------------------------------------
 "enable indent guides plugin at startup
@@ -236,10 +232,8 @@ let g:indent_guides_start_level = 2
 let g:unite_source_history_yank_enable = 1
 "let b:javascript_fold = 'true'
 let g:angular_filename_convention = 'camelcased'
-let g:netrw_liststyle=3
+let g:netrw_liststyle = 3
 "set terminal an gui stuff
-"airline tabline
-let g:airline#extensions#tabline#enabled=1
 "not check on wq
 let g:syntastic_check_on_wq = 0
 "set specific linters
@@ -254,6 +248,9 @@ let g:pymode_folding=0
 let g:bufferline_echo=0
 "airline theme
 "show short mode indicator in airline
+"airline tabline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_skip_empty_sections = 1
 let g:airline_mode_map={
       \'__' : '-',
       \'n' : 'N',
