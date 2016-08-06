@@ -16,17 +16,25 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree'
-Plug 'sirver/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'tomtom/tlib_vim' | Plug 'marcweber/vim-addon-mw-utils'
 Plug 'Shougo/unite.vim' | Plug 'Shougo/neomru.vim'
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'majutsushi/tagbar'
+Plug 'dietsche/vim-lastplace'
 Plug 'klen/python-mode', {'for': 'python'}
+"---------------------------------------------------------------------------->JS
+Plug 'othree/yajs.vim', {'for': 'javascript'}
+"Plug 'jelera/vim-javascript-syntax', {'for': 'javascript'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'heavenshell/vim-jsdoc', {'for': 'javascript'}
 Plug 'burnettk/vim-angular', {'for': 'javascript'}
+Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
+"----------------------------------------------------------------------------<JS
 Plug 'tpope/vim-rails', {'for': 'ruby'}
 Plug 'evanmiller/nginx-vim-syntax', {'for': 'nginx'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
 "custom stuff
 Plug '~/.config/nvim/custom-tiagobrait'
 call plug#end()
@@ -108,7 +116,7 @@ set nolinebreak
 "don't wait too much to complete when reading keycodes
 set ttimeoutlen=20
 set listchars=tab:▸\ ,eol:¬
-
+set clipboard=unnamedplus
 if has("gui_running")
   set guifont=Inconsolata\-dz\ for\ Powerline\ 10
   set guitablabel=%-0.12t%M
@@ -127,8 +135,7 @@ else
   if $TERM == "linux"
     let g:airline_left_sep='|'
     let g:airline_right_sep='|'
-    let g:airline_theme='solarized'
-    set background=dark
+    let g:airline_theme='base16_default'
   else
     let g:airline_powerline_fonts = 1
     let base16colorspace=256
@@ -173,7 +180,7 @@ vnoremap / /\v
 nmap <leader>T :TagbarToggle<CR>
 imap <leader>T <ESC>:TagbarToggle<CR>i
 " <leader>ev Shortcut to edit .vimrc file on the fly on a vertical window.
-nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<CR>
+nnoremap <leader>ie <ESC>:e $MYVIMRC<CR>
 vnoremap <tab> %
 "navigating through buffers with a little more ease
 nmap <leader>] :bnext<CR>
@@ -189,10 +196,25 @@ nmap <leader>E :Vexplore<CR>
 nmap <F1> :tab h<CR>
 "-------------------------------------------------------------------------------
 
+"-FUNCTIONS---------------------------------------------------------------------
+"enable correct js linter
+fun! SetJSLinter()
+  let path = expand('%:p:h')
+  while 1
+    if path == '/'
+      break
+    endif
+    if !empty(glob(path . '/.eslintrc')) || !empty(glob(path . '/.eslintrc.*'))
+      let g:syntastic_javascript_checkers = ['eslint']
+      break
+    endif
+    let path = resolve(path . "/..")
+  endw
+endf
+"-------------------------------------------------------------------------------
 "-AUTOCOMMANDS------------------------------------------------------------------
-"au FocusLost * silent! :wa
-" Working with split screen nicely
-" Resize Split When the window is resized"
+
+au Filetype javascript call SetJSLinter()
 au VimResized * :wincmd =
 " Wildmenu completion
 set wildmenu
@@ -208,14 +230,6 @@ set wildignore+=*.luac "Lua byte code"
 set wildignore+=migrations "Django migrations"
 set wildignore+=*.pyc "Python Object codes"
 set wildignore+=*.orig "Merge resolution files"
-"Rebember the last cursor position
-"augroup line_return
-    "au!
-    "au BufReadPost *
-        "\ if line("'\"") > 0 && line("'\"") <= line("$") |
-        "\ execute 'normal! g`"zvzz' |
-        "\ endif
-"augroup END
 ""-------------------------------------------------------------------------------
 
 "-VARS--------------------------------------------------------------------------
@@ -237,7 +251,7 @@ let g:netrw_liststyle = 3
 "not check on wq
 let g:syntastic_check_on_wq = 0
 "set specific linters
-let g:syntastic_javascript_checkers = ["jshint"]
+"let g:syntastic_javascript_checkers = ["eslint","jshint"]
 let g:syntastic_css_checkers = ["csslint"]
 let g:syntastic_html_checkers = ["tidy"]
 "disable Syntastic active checking for python:
@@ -246,9 +260,7 @@ let g:syntastic_mode_map = { 'mode': 'active','passive_filetypes': ['python'] }
 let g:pymode_folding=0
 "don't show buffer names in commandline, let airline take care of it
 let g:bufferline_echo=0
-"airline theme
-"show short mode indicator in airline
-"airline tabline
+let g:lastplace_ignore = "gitcommit"
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_skip_empty_sections = 1
 let g:airline_mode_map={
@@ -265,8 +277,7 @@ let g:airline_mode_map={
       \'' : 'SB',
       \}
 "javascript plugin stuff
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_ngdoc = 1
+let g:used_javascript_libs = 'angularjs,angularui,react'
 "snippets information
 let g:snips_author='Tiago Polizelli Brait'
 let g:snips_company='Levus LTDA'
