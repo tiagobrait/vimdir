@@ -21,19 +21,24 @@ Plug 'Shougo/unite.vim' | Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'majutsushi/tagbar'
 Plug 'dietsche/vim-lastplace'
+Plug 'mtth/scratch.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+"---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', {'for': 'python'}
 "---------------------------------------------------------------------------->JS
 Plug 'othree/yajs.vim', {'for': 'javascript'}
-"Plug 'jelera/vim-javascript-syntax', {'for': 'javascript'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'heavenshell/vim-jsdoc', {'for': 'javascript'}
 Plug 'burnettk/vim-angular', {'for': 'javascript'}
 Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
-"----------------------------------------------------------------------------<JS
+Plug 'justinj/vim-react-snippets', {'for': 'javascript' }
+"---------------------------------------------------------------------------->RB
 Plug 'tpope/vim-rails', {'for': 'ruby'}
+"---------------------------------------------------------------------------->NG
 Plug 'evanmiller/nginx-vim-syntax', {'for': 'nginx'}
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"---------------------------------------------------------------------------->HT
+Plug 'gregsexton/MatchTag', {'for': 'html'}
 
 "custom stuff
 Plug '~/.config/nvim/custom-tiagobrait'
@@ -42,11 +47,11 @@ call plug#end()
 "-------------------------------------------------------------------------------
 
 "UNITE CALLS--------------------------------------------------------------------
-"call unite#filters#matcher_default#use(['matcher_fuzzy'])
-
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "-------------------------------------------------------------------------------
 
 "-OPTIONS-----------------------------------------------------------------------
+set title
 "disable modelines (yuck!)
 set modelines=0
 "much better identation settings
@@ -115,7 +120,7 @@ set wrapmargin=0
 set nolinebreak
 "don't wait too much to complete when reading keycodes
 set ttimeoutlen=20
-set listchars=tab:▸\ ,eol:¬
+set listchars=tab:↹·,eol:↵,trail:♦,nbsp:·
 set clipboard=unnamedplus
 if has("gui_running")
   set guifont=Inconsolata\-dz\ for\ Powerline\ 10
@@ -169,6 +174,7 @@ nnoremap <leader>ug <ESC>:<C-u>Unite -start-insert -prompt=▶ file_rec/git<cr>
 nnoremap <leader>ub <ESC>:<C-u>Unite -start-insert -prompt=▶ buffer<cr>
 nnoremap <leader>uy <ESC>:<C-u>Unite -start-insert -prompt=▶ history/yank<cr>
 nnoremap <leader>um <ESC>:<C-u>Unite -start-insert -prompt=▶ file_mru<cr>
+nmap <leader>l :set list!<CR>
 "turn off highlighting
 nnoremap <leader><space> <ESC>:<C-u>noh<cr>
 nnoremap <leader>L <ESC>:<C-u>set list!<cr>
@@ -192,6 +198,7 @@ nmap <leader>Q :bp <BAR> :bd! #<CR>
 nmap <leader>S :let __ls=@/ <BAR> :%s#\s\+$##g <BAR> :let @/=__ls <BAR> :noh <CR>
 nmap <leader>e :Explore<CR>
 nmap <leader>E :Vexplore<CR>
+nmap <leader>s :Scratch<CR>
 "open help in a new tab
 nmap <F1> :tab h<CR>
 "-------------------------------------------------------------------------------
@@ -257,13 +264,13 @@ let g:syntastic_html_checkers = ["tidy"]
 "disable Syntastic active checking for python:
 let g:syntastic_mode_map = { 'mode': 'active','passive_filetypes': ['python'] }
 "disable python-mode folding
-let g:pymode_folding=0
+let g:pymode_folding = 0
 "don't show buffer names in commandline, let airline take care of it
-let g:bufferline_echo=0
+let g:bufferline_echo = 0
 let g:lastplace_ignore = "gitcommit"
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_skip_empty_sections = 1
-let g:airline_mode_map={
+let g:airline_mode_map = {
       \'__' : '-',
       \'n' : 'N',
       \'i' : 'I',
@@ -276,17 +283,18 @@ let g:airline_mode_map={
       \'S' : 'SL',
       \'' : 'SB',
       \}
+"let g:airline_exclude_filenames = ["__Scratch__"]
 "javascript plugin stuff
 let g:used_javascript_libs = 'angularjs,angularui,react'
 "snippets information
-let g:snips_author='Tiago Polizelli Brait'
-let g:snips_company='Levus LTDA'
-let g:snips_email='tiagobrait@gmail.com'
-let g:snips_github='https://github.com/tiagobrait'
-let g:snips_nick='tiagobrait'
-let g:author='Tiago Polizelli Brait'
-let g:company='Levus LTDA'
-let g:email='tiagobrait@gmail.com'
-let g:github='https://github.com/tiagobrait'
+let g:snips_author = 'Tiago Polizelli Brait'
+let g:snips_company = 'Levus LTDA'
+let g:snips_email = 'tiagobrait@gmail.com'
+let g:snips_github = 'https://github.com/tiagobrait'
+let g:snips_nick = 'tiagobrait'
+let g:author = 'Tiago Polizelli Brait'
+let g:company = 'Levus LTDA'
+let g:email = 'tiagobrait@gmail.com'
+let g:github = 'https://github.com/tiagobrait'
 
 "-------------------------------------------------------------------------------
