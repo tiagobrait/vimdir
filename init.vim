@@ -27,6 +27,7 @@ Plug 'vim-airline/vim-airline-themes'
 "---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', {'for': 'python'}
 "---------------------------------------------------------------------------->JS
+Plug 'matthewsimo/angular-vim-snippets', {'for': 'javascript'}
 Plug 'othree/yajs.vim', {'for': 'javascript'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'heavenshell/vim-jsdoc', {'for': 'javascript'}
@@ -48,6 +49,10 @@ call plug#end()
 
 "UNITE CALLS--------------------------------------------------------------------
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"NOTE TO SELF: do not use this, globs are slow as fuck. Use good old regex.
+"call unite#custom#source('file_rec/async,file_mru,file,buffer,grep', 'ignore_globs', ['**/bower_components/', 'node_modules/'] + split(&wildignore, ','))
+call unite#custom#source('file,file_rec,file_rec/async,file_rec/git', 'ignore_pattern', 'node_modules\|bower_components')
+"-------------------------------------------------------------------------------
 "-------------------------------------------------------------------------------
 
 "-OPTIONS-----------------------------------------------------------------------
@@ -169,11 +174,11 @@ hi User6 guifg=White ctermbg=DarkGrey cterm=bold guifg=White guibg=DarkGrey gui=
 
 "-MAPPINGS----------------------------------------------------------------------
 "sweet mother of unite
-nnoremap <leader>uf <ESC>:<C-u>Unite -start-insert -prompt=▶ file_rec/async<cr>
-nnoremap <leader>ug <ESC>:<C-u>Unite -start-insert -prompt=▶ file_rec/git<cr>
-nnoremap <leader>ub <ESC>:<C-u>Unite -start-insert -prompt=▶ buffer<cr>
-nnoremap <leader>uy <ESC>:<C-u>Unite -start-insert -prompt=▶ history/yank<cr>
-nnoremap <leader>um <ESC>:<C-u>Unite -start-insert -prompt=▶ file_mru<cr>
+nnoremap <leader>uf <ESC>:<C-u>Unite -start-insert -prompt=▶ -force-redraw -wipe -buffer-name=files_fa file_rec/async<cr>
+nnoremap <leader>ug <ESC>:<C-u>Unite -start-insert -prompt=▶ -force-redraw -wipe -buffer-name=file_ga file_rec/git<cr>
+nnoremap <leader>ub <ESC>:<C-u>Unite -start-insert -prompt=▶ -force-redraw -wipe -buffer-name=bufferlist buffer<cr>
+nnoremap <leader>uy <ESC>:<C-u>Unite -start-insert -prompt=▶  -force-redraw -wipe -buffer-name=yankhist history/yank<cr>
+nnoremap <leader>um <ESC>:<C-u>Unite -start-insert -prompt=▶  -force-redraw -wipe -buffer-name=MRU file_mru<cr>
 nmap <leader>l :set list!<CR>
 "turn off highlighting
 nnoremap <leader><space> <ESC>:<C-u>noh<cr>
