@@ -12,11 +12,13 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
 Plug 'myusuf3/numbers.vim'
 Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree'
-Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'tomtom/tlib_vim' | Plug 'marcweber/vim-addon-mw-utils'
+"Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'tomtom/tlib_vim' | Plug 'marcweber/vim-addon-mw-utils'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Shougo/unite.vim' | Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'majutsushi/tagbar'
@@ -24,6 +26,7 @@ Plug 'dietsche/vim-lastplace'
 Plug 'mtth/scratch.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'Valloric/YouCompleteMe', {'do': 'install.py --all'}
 "---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', {'for': 'python'}
 "---------------------------------------------------------------------------->JS
@@ -56,6 +59,7 @@ call unite#custom#source('file,file_rec,file_rec/async,file_rec/git', 'ignore_pa
 "-------------------------------------------------------------------------------
 
 "-OPTIONS-----------------------------------------------------------------------
+set cursorline
 set title
 "disable modelines (yuck!)
 set modelines=0
@@ -127,6 +131,7 @@ set nolinebreak
 set ttimeoutlen=20
 set listchars=tab:↹·,eol:↵,trail:♦,nbsp:·
 set clipboard=unnamedplus
+set completeopt-=preview
 if has("gui_running")
   set guifont=Inconsolata\-dz\ for\ Powerline\ 10
   set guitablabel=%-0.12t%M
@@ -182,7 +187,6 @@ nnoremap <leader>um <ESC>:<C-u>Unite -start-insert -prompt=▶  -force-redraw -w
 nmap <leader>l :set list!<CR>
 "turn off highlighting
 nnoremap <leader><space> <ESC>:<C-u>noh<cr>
-nnoremap <leader>L <ESC>:<C-u>set list!<cr>
 nnoremap <tab> %
 nnoremap g; g;zz
 nnoremap / /\v
@@ -197,15 +201,31 @@ vnoremap <tab> %
 nmap <leader>] :bnext<CR>
 nmap <leader>[ :bprevious<CR>
 nmap <leader>t :enew<CR>
-nmap <leader>q :bp <BAR> :bd #<CR>
-nmap <leader>Q :bp <BAR> :bd! #<CR>
+nmap <leader>tc :bp <BAR> :bd #<CR>
+nmap <leader>tq :bp <BAR> :bd! #<CR>
 "quick and dirty way to remove trailing spaces (a little better than the
 nmap <leader>S :let __ls=@/ <BAR> :%s#\s\+$##g <BAR> :let @/=__ls <BAR> :noh <CR>
 nmap <leader>e :Explore<CR>
 nmap <leader>E :Vexplore<CR>
-nmap <leader>s :Scratch<CR>
+nmap <leader>c :Scratch<CR>
 "open help in a new tab
 nmap <F1> :tab h<CR>
+"quit (abort)
+nmap <leader>a :qa!<CR>
+imap <leader>a <ESC>:qa!<CR>
+"save and quit
+nmap <leader>q :wqa<CR>
+imap <leader>q <ESC>:wqa<CR>
+"save
+nmap <leader>s :w<CR>
+imap <leader>s <ESC>:w<CR>i
+"save all
+nmap <leader>sa :w<CR>
+imap <leader>sa <ESC>:w<CR>i
+let g:UltiSnipsExpandTrigger = '<C-A>'
+let g:UltiSnipsJumpForwardTrigger = "<C-A>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-S>"
+let g:UltiSnipsListSnippets = "<C-D>"
 "-------------------------------------------------------------------------------
 
 "-FUNCTIONS---------------------------------------------------------------------
@@ -291,6 +311,9 @@ let g:airline_mode_map = {
 "let g:airline_exclude_filenames = ["__Scratch__"]
 "javascript plugin stuff
 let g:used_javascript_libs = 'angularjs,angularui,react'
+let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_show_diagnostics_ui = 0
 "snippets information
 let g:snips_author = 'Tiago Polizelli Brait'
 let g:snips_company = 'Levus LTDA'
