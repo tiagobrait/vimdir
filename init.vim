@@ -22,6 +22,7 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Shougo/unite.vim' | Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'majutsushi/tagbar'
+Plug 'ternjs/tern_for_vim'
 Plug 'dietsche/vim-lastplace'
 Plug 'mtth/scratch.vim'
 Plug 'vim-airline/vim-airline'
@@ -130,6 +131,7 @@ set nolinebreak
 "don't wait too much to complete when reading keycodes
 set ttimeoutlen=20
 set listchars=tab:↹·,eol:↵,trail:♦,nbsp:·
+set list
 set clipboard=unnamedplus
 set completeopt-=preview
 if has("gui_running")
