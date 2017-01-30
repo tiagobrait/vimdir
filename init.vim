@@ -42,6 +42,9 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc', { 'for': 'javascript' }
 Plug 'burnettk/vim-angular', { 'for': 'javascript' }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
+Plug 'moll/vim-node', { 'for': 'javascript' }
 Plug 'justinj/vim-react-snippets', { 'for': 'javascript' }
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 "---------------------------------------------------------------------------->RB
@@ -308,7 +311,7 @@ let g:indentLine_enabled = 0
 let g:indentLine_char = '│'
 "completion stuff
 let g:deoplete#enable_at_startup = 1
-
+let g:tern_request_timeout = 2
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
 "enable indent guides plugin at startup
