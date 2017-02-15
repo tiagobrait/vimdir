@@ -141,6 +141,7 @@ set listchars=tab:↹·,eol:↵,trail:♦,nbsp:·
 set clipboard=unnamedplus
 set completeopt-=preview
 set splitbelow
+set termguicolors
 "and what a nice statusline
 "set statusline=%1*[%n]%<%f\ %r%m                           "buffn,name,RO,change
 "set statusline+=%2*%y[%{&ff}][%{&fenc!=''?&fenc:&enc}]     "type,format,encoding
