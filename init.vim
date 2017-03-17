@@ -37,22 +37,24 @@ Plug 'Yggdroot/indentLine'
 Plug 'klen/python-mode', { 'for': 'python' }
 "---------------------------------------------------------------------------->JS
 Plug 'matthewsimo/angular-vim-snippets', { 'for': 'javascript' }
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc', { 'for': 'javascript' }
 Plug 'burnettk/vim-angular', { 'for': 'javascript' }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
+" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
 Plug 'moll/vim-node', { 'for': 'javascript' }
-Plug 'justinj/vim-react-snippets', { 'for': 'javascript' }
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 "---------------------------------------------------------------------------->RB
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
 "---------------------------------------------------------------------------->NG
 Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
 "---------------------------------------------------------------------------->HT
 Plug 'gregsexton/MatchTag', { 'for': 'html' }
+"--------------------------------------------------------------------------->EJS
+Plug 'nikvdp/ejs-syntax', { 'for': 'ejs' }
 "-----------------------------------------------------------------------LOADLAST
 Plug 'ryanoasis/vim-devicons'
 
@@ -256,6 +258,7 @@ let g:UltiSnipsListSnippets = "<C-D>"
 fun! SetJSLinter()
   let path = expand('%:p:h')
   while 1
+    echom path
     if path == '/'
       "let g:neomake_javascript_enabled_makers = ['xo']
       break
@@ -303,9 +306,10 @@ set wildignore+=*.luac "Lua byte code"
 set wildignore+=migrations "Django migrations"
 set wildignore+=*.pyc "Python Object codes"
 set wildignore+=*.orig "Merge resolution files"
-""-------------------------------------------------------------------------------
+""------------------------------------------------------------------------------
 
 "-VARS--------------------------------------------------------------------------
+let g:NERDSpaceDelims=1
 let g:echodoc_enable_at_startup=1
 "let g:airline_exclude_preview=1
 let g:indentLine_enabled = 0
