@@ -53,8 +53,6 @@ Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
 "---------------------------------------------------------------------------->HT
 Plug 'gregsexton/MatchTag', { 'for': 'html' }
-"--------------------------------------------------------------------------->EJS
-Plug 'nikvdp/ejs-syntax', { 'for': 'ejs' }
 "-----------------------------------------------------------------------LOADLAST
 Plug 'ryanoasis/vim-devicons'
 
@@ -243,8 +241,8 @@ imap <leader>q <ESC>:wqa<CR>
 nmap <leader>s :w<CR>
 imap <leader>s <ESC>:w<CR>i
 "save all
-nmap <leader>sa :w<CR>
-imap <leader>sa <ESC>:w<CR>i
+nmap <leader>sa :wa<CR>
+imap <leader>sa <ESC>:wa<CR>i
 map <c-n> <esc>:NERDTreeToggle<cr>
 
 let g:UltiSnipsExpandTrigger = '<C-A>'
@@ -258,7 +256,6 @@ let g:UltiSnipsListSnippets = "<C-D>"
 fun! SetJSLinter()
   let path = expand('%:p:h')
   while 1
-    echom path
     if path == '/'
       "let g:neomake_javascript_enabled_makers = ['xo']
       break
