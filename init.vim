@@ -44,7 +44,7 @@ Plug 'burnettk/vim-angular', { 'for': 'javascript' }
 " Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 " Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
-Plug 'mxw/vim-jsx', {'for': 'javascript'}
+Plug 'mxw/vim-jsx', {'for': 'javascript.jsx'}
 Plug 'moll/vim-node', { 'for': 'javascript' }
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
@@ -293,6 +293,7 @@ au BufWritePost,BufEnter * Neomake
 au VimResized * :wincmd=
 au BufEnter * if &previewwindow | setlocal nonumber norelativenumber nolist |  endif
 au Filetype javascript call SetJSLinter()
+au Filetype javascript.jsx call SetJSLinter()
 
 " Wildmenu completion
 set wildmenu
