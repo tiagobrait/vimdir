@@ -39,13 +39,17 @@ Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'matthewsimo/angular-vim-snippets', { 'for': 'javascript' }
 Plug 'heavenshell/vim-jsdoc', { 'for': 'javascript' }
 Plug 'burnettk/vim-angular', { 'for': 'javascript' }
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
-" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
+" Plug 'othree/yajs.vim', { 'for': 'javascript' }
+" Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+" Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx', {'for': 'javascript'}
 Plug 'moll/vim-node', { 'for': 'javascript' }
 Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
+Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
+"---------------------------------------------------------------------------->GO
+Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
 "---------------------------------------------------------------------------->RB
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
@@ -72,6 +76,7 @@ call deoplete#custom#set('_', 'converters', ['converter_auto_paren'])
 "-------------------------------------------------------------------------------
 
 "-OPTIONS-----------------------------------------------------------------------
+set shell=/bin/bash
 set cursorline
 set title
 set autoindent
@@ -306,6 +311,9 @@ set wildignore+=*.orig "Merge resolution files"
 ""------------------------------------------------------------------------------
 
 "-VARS--------------------------------------------------------------------------
+"gocompletion
+let g:deoplete#sources#go#gocode_binary = '/usr/bin/gocode'
+let g:neomake_go_enabled_makers = ['golint']
 let g:NERDSpaceDelims=1
 let g:echodoc_enable_at_startup=1
 "let g:airline_exclude_preview=1
