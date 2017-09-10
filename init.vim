@@ -33,6 +33,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Yggdroot/indentLine'
+Plug 'MarcWeber/vim-addon-local-vimrc'
 "---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', { 'for': 'python' }
 "---------------------------------------------------------------------------->JS
@@ -142,7 +143,7 @@ set formatoptions+=rqn1
 set clipboard=unnamed
 set ttimeoutlen=20
 set wrapmargin=0
-set listchars=tab:↹·,eol:↵,trail:♦,nbsp:·
+set listchars=tab:↹\ ,eol:↵,trail:♦,nbsp:·
 set clipboard=unnamedplus
 set completeopt-=preview
 set splitbelow
