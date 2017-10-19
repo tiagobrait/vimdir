@@ -31,9 +31,13 @@ Plug 'dietsche/vim-lastplace'
 "Plug 'mtth/scratch.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'roxma/nvim-completion-manager'
 Plug 'Yggdroot/indentLine'
 Plug 'MarcWeber/vim-addon-local-vimrc'
+"-
+Plug 'calebeby/ncm-css'
+Plug 'roxma/ncm-clang'
 "---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', { 'for': 'python' }
 "---------------------------------------------------------------------------->JS
@@ -47,17 +51,23 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 " Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', {'for': 'javascript.jsx'}
 Plug 'moll/vim-node', { 'for': 'javascript' }
-Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
+" Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
+Plug 'roxma/nvim-cm-tern',  {'do': 'npm install', 'for': 'javascript' }
 "---------------------------------------------------------------------------->GO
-Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
+" Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
 "---------------------------------------------------------------------------->RB
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
-Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
+" Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
+Plug 'roxma/ncm-rct-complete', { 'for': 'ruby' }
 "---------------------------------------------------------------------------->NG
-Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
+Plug 'chr4/nginx.vim', { 'for': 'nginx' }
 "---------------------------------------------------------------------------->HT
 Plug 'gregsexton/MatchTag', { 'for': 'html' }
+Plug 'othree/html5.vim', { 'for': 'html' }
+"---------------------------------------------------------------------------->TS
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 "-----------------------------------------------------------------------LOADLAST
 Plug 'ryanoasis/vim-devicons'
 
@@ -72,7 +82,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "NOTE TO SELF: do not use this, globs are slow as fuck. Use good old regex.
 "call unite#custom#source('file_rec/async,file_mru,file,buffer,grep', 'ignore_globs', ['**/bower_components/', 'node_modules/'] + split(&wildignore, ','))
 call unite#custom#source('file,file_rec,file_rec/async,file_rec/git', 'ignore_pattern', 'node_modules\|bower_components')
-call deoplete#custom#set('_', 'converters', ['converter_auto_paren'])
+" call deoplete#custom#set('_', 'converters', ['converter_auto_paren'])
 "-------------------------------------------------------------------------------
 "-------------------------------------------------------------------------------
 
@@ -203,7 +213,8 @@ hi User6 guifg=White ctermbg=DarkGrey cterm=bold guifg=White guibg=DarkGrey gui=
 "TODO: add smarter functions so we can use snippets with tab too!
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-inoremap <expr><return> pumvisible() ? "\<c-y>" : "\<return>"
+" inoremap <expr><return> pumvisible() ? "\<c-y>" : "\<return>"
+inoremap <expr> <return> CompleteSnipOrCR()
 
 nnoremap <leader>p <ESC>:call TogglePrevWin()<return>
 "sweet mother of unite
@@ -286,6 +297,20 @@ fun! TogglePrevWin()
     set completeopt+=preview
   endif
 endf
+
+fun! CompleteSnipOrCR()
+  if pumvisible()
+    if cm#completed_is_snippet()
+      echom "IS_VISIBLE_SNIPPET"
+      return "\<C-R>=UltiSnips#ExpandSnippetOrJump()\<CR>"
+    else
+      echom "IS_VISIBLE_COMPLETE"
+      return "\<c-y>"
+    endif
+  endif
+  echom "IS_NOT_VISIBLE"
+  return "\<return>"
+endf
 "-------------------------------------------------------------------------------
 "-AUTOCOMMANDS------------------------------------------------------------------
 
@@ -313,16 +338,17 @@ set wildignore+=*.orig "Merge resolution files"
 ""------------------------------------------------------------------------------
 
 "-VARS--------------------------------------------------------------------------
+let g:neomake_verbose = 0
 "gocompletion
-let g:deoplete#sources#go#gocode_binary = '/usr/bin/gocode'
-let g:neomake_go_enabled_makers = ['golint']
+" let g:deoplete#sources#go#gocode_binary = '/usr/bin/gocode'
+" let g:neomake_go_enabled_makers = ['golint']
 let g:NERDSpaceDelims=1
 let g:echodoc_enable_at_startup=1
 "let g:airline_exclude_preview=1
 let g:indentLine_enabled = 0
 let g:indentLine_char = '│'
 "completion stuff
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 let g:tern_request_timeout = 2
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
