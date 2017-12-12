@@ -26,7 +26,7 @@ Plug 'Shougo/neopairs.vim'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/echodoc.vim'
 Plug 'majutsushi/tagbar'
-Plug 'ternjs/tern_for_vim'
+" Plug 'ternjs/tern_for_vim'
 Plug 'dietsche/vim-lastplace'
 "Plug 'mtth/scratch.vim'
 Plug 'vim-airline/vim-airline'
@@ -38,6 +38,9 @@ Plug 'MarcWeber/vim-addon-local-vimrc'
 "-
 Plug 'calebeby/ncm-css'
 Plug 'roxma/ncm-clang'
+Plug 'roxma/ncm-rct-complete'
+Plug 'roxma/nvim-cm-tern',  { 'do': 'npm install' }
+Plug 'christoomey/vim-conflicted'
 "---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', { 'for': 'python' }
 "---------------------------------------------------------------------------->JS
@@ -53,13 +56,12 @@ Plug 'mxw/vim-jsx', {'for': 'javascript.jsx'}
 Plug 'moll/vim-node', { 'for': 'javascript' }
 " Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
 Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
-Plug 'roxma/nvim-cm-tern',  {'do': 'npm install', 'for': 'javascript' }
 "---------------------------------------------------------------------------->GO
+Plug 'fatih/vim-go', { 'for': 'go'  }
 " Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
 "---------------------------------------------------------------------------->RB
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 " Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
-Plug 'roxma/ncm-rct-complete', { 'for': 'ruby' }
 "---------------------------------------------------------------------------->NG
 Plug 'chr4/nginx.vim', { 'for': 'nginx' }
 "---------------------------------------------------------------------------->HT
@@ -164,6 +166,7 @@ set termguicolors
 "set statusline+=%6*%=                                      "L/R separator
 "set statusline+=%3*[ln:\ %l\ of\ %L\ (%3p%%)]%4*[cl:\ %c] "lines and columns
 "set statusline+=%5*[%P]%*                                  "percent
+
 if has('gui_running')
   set guifont=DejaVuSansMonoForPowerline\ Nerd\ Font\ 10
   set guitablabel=%-0.12t%M
@@ -175,19 +178,19 @@ if has('gui_running')
   set guioptions-=m
   let g:airline_powerline_fonts = 1
   let base16colorspace = 256
-  let g:airline_theme = 'base16color'
+  let g:airline_theme = 'base16def'
   colorscheme base16-default-dark
   set background=dark
 else
   if $TERM == 'linux'
     let g:airline_left_sep = '|'
     let g:airline_right_sep = '|'
-    let g:airline_theme = 'base16_default'
+    let g:airline_theme = 'base16def'
   else
     let g:airline_powerline_fonts = 1
     let base16colorspace = 256
-    let g:airline_theme = 'base16color'
     colorscheme base16-default-dark
+    let g:airline_theme = 'base16def'
     set background=dark
   endif
 endif
@@ -244,7 +247,6 @@ nmap <leader>tc :bp <BAR> :bd #<CR>
 nmap <leader>tq :bp <BAR> :bd! #<CR>
 "quick and dirty way to remove trailing spaces (a little better than the
 nmap <leader>S :let __ls=@/ <BAR> :%s#\s\+$##g <BAR> :let @/=__ls <BAR> :noh <CR>
-nmap <leader>E :Vexplore<CR>
 "nmap <leader>r :Scratch<CR>
 "open help in a new tab
 nmap <F1> :tab h<CR>
@@ -261,7 +263,9 @@ imap <leader>s <ESC>:w<CR>i
 nmap <leader>sa :wa<CR>
 imap <leader>sa <ESC>:wa<CR>i
 map <c-n> <esc>:NERDTreeToggle<cr>
-
+"vim conflicted
+nmap <leader>C :Conflicted<cr>
+nmap <leader>c :GitNextConflict<cr>
 let g:UltiSnipsExpandTrigger = '<C-A>'
 let g:UltiSnipsJumpForwardTrigger = "<C-A>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-S>"
@@ -301,14 +305,11 @@ endf
 fun! CompleteSnipOrCR()
   if pumvisible()
     if cm#completed_is_snippet()
-      echom "IS_VISIBLE_SNIPPET"
       return "\<C-R>=UltiSnips#ExpandSnippetOrJump()\<CR>"
     else
-      echom "IS_VISIBLE_COMPLETE"
       return "\<c-y>"
     endif
   endif
-  echom "IS_NOT_VISIBLE"
   return "\<return>"
 endf
 "-------------------------------------------------------------------------------
