@@ -178,14 +178,14 @@ if has('gui_running')
   set guioptions-=m
   let g:airline_powerline_fonts = 1
   let base16colorspace = 256
-  let g:airline_theme = 'base16def'
+  let g:airline_theme = 'base16_default'
   colorscheme base16-default-dark
   set background=dark
 else
   if $TERM == 'linux'
     let g:airline_left_sep = '|'
     let g:airline_right_sep = '|'
-    let g:airline_theme = 'base16def'
+    let g:airline_theme = 'base16_default'
   else
     let g:airline_powerline_fonts = 1
     let base16colorspace = 256
