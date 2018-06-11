@@ -3,8 +3,6 @@
 " (with some stuff borrowed from https://github.com/haridas/Dotfiles)
 
 "ok, let's organize this stuff now
-
-
 "-VIM-PLUG----------------------------------------------------------------------
 call plug#begin()
 Plug 'chriskempson/base16-vim'
@@ -13,34 +11,49 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'myusuf3/numbers.vim'
 Plug 'scrooloose/nerdtree'
 "Plug 'scrooloose/syntastic'
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree'
 "Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'tomtom/tlib_vim' | Plug 'marcweber/vim-addon-mw-utils'
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+endif
+
+let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
+let g:neosnippet#snippets_directory = '~/.vim/plugged/vim-snippets/snippets,~/.vim/custom-tiagobrait/snippets'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/unite.vim' | Plug 'Shougo/neomru.vim'
 Plug 'Shougo/neopairs.vim'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/echodoc.vim'
+Plug 'honza/vim-snippets'
+Plug 'Shougo/context_filetype.vim'
 Plug 'majutsushi/tagbar'
 " Plug 'ternjs/tern_for_vim'
 Plug 'dietsche/vim-lastplace'
 "Plug 'mtth/scratch.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'roxma/nvim-completion-manager'
+" Plug 'roxma/nvim-completion-manager'
 Plug 'Yggdroot/indentLine'
-Plug 'MarcWeber/vim-addon-local-vimrc'
+" Plug 'MarcWeber/vim-addon-local-vimrc'
 "-
-Plug 'calebeby/ncm-css'
-Plug 'roxma/ncm-clang'
-Plug 'roxma/ncm-rct-complete'
-Plug 'roxma/nvim-cm-tern',  { 'do': 'npm install' }
+" Plug 'calebeby/ncm-css'
+" Plug 'roxma/ncm-clang'
+" Plug 'roxma/ncm-rct-complete'
+" Plug 'roxma/nvim-cm-tern',  { 'do': 'npm install' }
 Plug 'christoomey/vim-conflicted'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'w0rp/ale'
+Plug 'autozimu/LanguageClient-neovim', {
+      \ 'branch': 'next',
+      \ 'do': 'bash install.sh'
+      \ }
 "---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', { 'for': 'python' }
 "---------------------------------------------------------------------------->JS
@@ -55,7 +68,7 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', {'for': 'javascript.jsx'}
 Plug 'moll/vim-node', { 'for': 'javascript' }
 " Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
-Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
+" Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
 "---------------------------------------------------------------------------->GO
 Plug 'fatih/vim-go', { 'for': 'go'  }
 " Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
@@ -160,6 +173,7 @@ set clipboard=unnamedplus
 set completeopt-=preview
 set splitbelow
 set termguicolors
+set shortmess+=c
 "and what a nice statusline
 "set statusline=%1*[%n]%<%f\ %r%m                           "buffn,name,RO,change
 "set statusline+=%2*%y[%{&ff}][%{&fenc!=''?&fenc:&enc}]     "type,format,encoding
@@ -213,11 +227,16 @@ hi User6 guifg=White ctermbg=DarkGrey cterm=bold guifg=White guibg=DarkGrey gui=
 "-------------------------------------------------------------------------------
 
 "-MAPPINGS----------------------------------------------------------------------
-"TODO: add smarter functions so we can use snippets with tab too!
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" inoremap <expr><return> pumvisible() ? "\<c-y>" : "\<return>"
-inoremap <expr> <return> CompleteSnipOrCR()
+inoremap <expr> <silent> <tab> pumvisible() ? "\<c-n>" : "<c-r>=SelectExpandJumpOrTab()<cr>"
+inoremap <expr> <silent> <s-tab> pumvisible() ? "\<c-p>" : "<c-r>=SelectExpandJumpOrTab()<cr>"
+inoremap <expr> <return> SnippetOrCR()
+
+snoremap <buffer> <silent> <tab> <esc>:call neosnippet#mappings#jump_impl()<cr>
+" snoremap <buffer> <silent> <s-tab> <esc>:call UltiSnips#JumpBackwards()<cr>
+
+imap <C-a>     <Plug>(neosnippet_expand_or_jump)
+smap <C-a>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-a>     <Plug>(neosnippet_expand_target)
 
 nnoremap <leader>p <ESC>:call TogglePrevWin()<return>
 "sweet mother of unite
@@ -236,8 +255,6 @@ vnoremap / /\v
 "tagbar
 nmap <leader>T :TagbarToggle<CR>
 imap <leader>T <ESC>:TagbarToggle<CR>i
-" <leader>ev Shortcut to edit .vimrc file on the fly on a vertical window.
-nnoremap <leader>ie <ESC>:e $MYVIMRC<CR>
 vnoremap <tab> %
 "navigating through buffers with a little more ease
 nmap <leader>] :bnext<CR>
@@ -266,32 +283,13 @@ map <c-n> <esc>:NERDTreeToggle<cr>
 "vim conflicted
 nmap <leader>C :Conflicted<cr>
 nmap <leader>c :GitNextConflict<cr>
-let g:UltiSnipsExpandTrigger = '<C-A>'
-let g:UltiSnipsJumpForwardTrigger = "<C-A>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-S>"
-let g:UltiSnipsListSnippets = "<C-D>"
+" let g:UltiSnipsExpandTrigger = '<NOP>'
+" let g:UltiSnipsJumpForwardTrigger = "<c-a>"
+" let g:UltiSnipsJumpBackwardTrigger = "<c-s>"
+" let g:UltiSnipsListSnippets = "<NOP>"
 "-------------------------------------------------------------------------------
 
 "-FUNCTIONS---------------------------------------------------------------------
-"enable correct js linter
-fun! SetJSLinter()
-  let path = expand('%:p:h')
-  while 1
-    if path == '/'
-      "let g:neomake_javascript_enabled_makers = ['xo']
-      break
-    endif
-    if !empty(glob(path . '/.eslintrc')) || !empty(glob(path . '/.eslintrc.*'))
-      let g:neomake_javascript_enabled_makers = ['eslint']
-      break
-    elseif !empty(glob(path . '/.jshintrc'))
-      let g:neomake_javascript_enabled_makers = ['jshint']
-      break
-    endif
-    let path = resolve(path . "/..")
-  endw
-endf
-
 fun! TogglePrevWin()
   if &completeopt =~ 'preview'
     set completeopt-=preview
@@ -302,25 +300,36 @@ fun! TogglePrevWin()
   endif
 endf
 
-fun! CompleteSnipOrCR()
+fun! SnippetOrCR()
   if pumvisible()
-    if cm#completed_is_snippet()
-      return "\<C-R>=UltiSnips#ExpandSnippetOrJump()\<CR>"
+    if neosnippet#expandable_or_jumpable()
+      return neosnippet#mappings#expand_impl()
     else
       return "\<c-y>"
     endif
   endif
   return "\<return>"
 endf
+
+" let g:ulti_expand_or_jump_res = 0
+" let g:ulti_jump_backwards_res = 0
+
+fun! SelectExpandJumpOrTab()
+  if neosnippet#jumpable()
+    return neosnippet#mappings#jump_impl()
+  else
+    return "\<tab>"
+  endif
+endf
 "-------------------------------------------------------------------------------
 "-AUTOCOMMANDS------------------------------------------------------------------
 
 au CompleteDone * pclose!
-au BufWritePost,BufEnter * Neomake
+" au BufWritePost,BufEnter * Neomake
 au VimResized * :wincmd=
 au BufEnter * if &previewwindow | setlocal nonumber norelativenumber nolist |  endif
-au Filetype javascript call SetJSLinter()
-au Filetype javascript.jsx call SetJSLinter()
+" au Filetype javascript call SetJSLinter()
+" au Filetype javascript.jsx call SetJSLinter()
 
 " Wildmenu completion
 set wildmenu
@@ -343,13 +352,15 @@ let g:neomake_verbose = 0
 "gocompletion
 " let g:deoplete#sources#go#gocode_binary = '/usr/bin/gocode'
 " let g:neomake_go_enabled_makers = ['golint']
+let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher', 'case': 'smartcase'}
+let g:cm_completekeys = "\<Plug>(cm_completefunc)"
 let g:NERDSpaceDelims=1
 let g:echodoc_enable_at_startup=1
 "let g:airline_exclude_preview=1
 let g:indentLine_enabled = 0
 let g:indentLine_char = '│'
 "completion stuff
-" let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
 let g:tern_request_timeout = 2
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
@@ -399,6 +410,13 @@ let g:airline_mode_map = {
 "let g:airline_exclude_filenames = ["__Scratch__"]
 "javascript plugin stuff
 let g:used_javascript_libs = 'angularjs,angularui,react'
+let dart_html_in_string = 1
+let g:LanguageClient_serverCommands = {
+      \'dart': ['dart_language_server'],
+      \'rust': ['rls']
+      \}
+let g:LanguageClient_diagnosticsEnable = 0
+let g:LanguageClient_autoStart = 1
 "snippets information
 let g:snips_author = 'Tiago Polizelli Brait'
 let g:snips_company = 'Levus LTDA'
@@ -409,5 +427,16 @@ let g:author = 'Tiago Polizelli Brait'
 let g:company = 'Levus LTDA'
 let g:email = 'tiagobrait@gmail.com'
 let g:github = 'https://github.com/tiagobrait'
-
+"golang stuff
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+let g:go_fmt_command = "goimports"
+let g:go_snippet_engine = "ultisnips"
+let g:go_fmt_fail_silently = 1
 "-------------------------------------------------------------------------------
