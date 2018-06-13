@@ -71,6 +71,7 @@ Plug 'moll/vim-node', { 'for': 'javascript' }
 " Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
 "---------------------------------------------------------------------------->GO
 Plug 'fatih/vim-go', { 'for': 'go'  }
+Plug 'zchee/deoplete-go', { 'do': 'make', 'for': 'go' }
 " Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
 "---------------------------------------------------------------------------->RB
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
@@ -220,6 +221,8 @@ hi User3 ctermfg=White ctermbg=DarkBlue cterm=bold guifg=White guibg=DarkBlue gu
 hi User4 ctermfg=White ctermbg=DarkMagenta cterm=bold guifg=White guibg=DarkMagenta gui=bold
 hi User5 ctermfg=White ctermbg=DarkGreen cterm=bold guifg=White guibg=DarkGreen gui=bold
 hi User6 guifg=White ctermbg=DarkGrey cterm=bold guifg=White guibg=DarkGrey gui=bold
+hi ALEErrorSign ctermfg=1 ctermbg=18 cterm=bold guifg=#ab4642 guibg=#282828 gui=bold
+hi ALEWarningSign ctermfg=3 ctermbg=18 cterm=bold guifg=#f7ca88 guibg=#282828 gui=bold
 "hi User7 guifg=White ctermbg=DarkGrey cterm=bold
 "hi User8 ctermfg=White ctermbg=DarkGrey cterm=bold
 "hi User9 ctermfg=White ctermbg=DarkGrey cterm=bold
@@ -234,9 +237,9 @@ inoremap <expr> <return> SnippetOrCR()
 snoremap <buffer> <silent> <tab> <esc>:call neosnippet#mappings#jump_impl()<cr>
 " snoremap <buffer> <silent> <s-tab> <esc>:call UltiSnips#JumpBackwards()<cr>
 
-imap <C-a>     <Plug>(neosnippet_expand_or_jump)
-smap <C-a>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-a>     <Plug>(neosnippet_expand_target)
+imap <C-a> <Plug>(neosnippet_expand_or_jump)
+smap <C-a> <Plug>(neosnippet_expand_or_jump)
+xmap <C-a> <Plug>(neosnippet_expand_target)
 
 nnoremap <leader>p <ESC>:call TogglePrevWin()<return>
 "sweet mother of unite
@@ -316,7 +319,7 @@ endf
 
 fun! SelectExpandJumpOrTab()
   if neosnippet#jumpable()
-    return neosnippet#mappings#jump_impl()
+    return neosnippet#mappings#expand_or_jump_impl()
   else
     return "\<tab>"
   endif
@@ -348,12 +351,11 @@ set wildignore+=*.orig "Merge resolution files"
 ""------------------------------------------------------------------------------
 
 "-VARS--------------------------------------------------------------------------
-let g:neomake_verbose = 0
-"gocompletion
-" let g:deoplete#sources#go#gocode_binary = '/usr/bin/gocode'
-" let g:neomake_go_enabled_makers = ['golint']
-let g:cm_matcher = {'module': 'cm_matchers.abbrev_matcher', 'case': 'smartcase'}
-let g:cm_completekeys = "\<Plug>(cm_completefunc)"
+let g:ale_linters = { 'javascript': ['eslint'] }
+let g:ale_fixers = { 'javascript': ['eslint'] }
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '◆'
+" let g:ale_change_sign_column_always = 1
 let g:NERDSpaceDelims=1
 let g:echodoc_enable_at_startup=1
 "let g:airline_exclude_preview=1
