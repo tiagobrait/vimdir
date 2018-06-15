@@ -162,7 +162,7 @@ set mouse=a
 "wrapping limit
 set textwidth=0
 "highlight column 81
-set colorcolumn=81
+set colorcolumn=110
 "formatting stuff, go see the online help
 set formatoptions+=rqn1
 "set clipboard
