@@ -54,36 +54,36 @@ Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
       \ 'do': 'bash install.sh'
       \ }
+Plug 'jparise/vim-graphql'
 "---------------------------------------------------------------------------->PY
 Plug 'klen/python-mode', { 'for': 'python' }
 "---------------------------------------------------------------------------->JS
-Plug 'matthewsimo/angular-vim-snippets', { 'for': 'javascript' }
-Plug 'heavenshell/vim-jsdoc', { 'for': 'javascript' }
-Plug 'burnettk/vim-angular', { 'for': 'javascript' }
-" Plug 'othree/yajs.vim', { 'for': 'javascript' }
-" Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-" Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-" Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
-Plug 'mxw/vim-jsx', {'for': 'javascript.jsx'}
-Plug 'moll/vim-node', { 'for': 'javascript' }
-" Plug 'carlitux/deoplete-ternjs', { 'for': 'javascript' }
-" Plug 'benjie/neomake-local-eslint.vim', { 'for': 'javascript' }
+Plug 'matthewsimo/angular-vim-snippets'
+Plug 'heavenshell/vim-jsdoc'
+Plug 'burnettk/vim-angular'
+" Plug 'othree/yajs.vim'
+" Plug 'othree/javascript-libraries-syntax.vim'
+" Plug 'othree/es.next.syntax.vim'
+Plug 'pangloss/vim-javascript'
+" Plug 'MaxMEllon/vim-jsx-pretty'
+" Plug 'mxw/vim-jsx', {'for': 'javascript.jsx'}
+Plug 'moll/vim-node'
+Plug 'carlitux/deoplete-ternjs'
+" Plug 'benjie/neomake-local-eslint.vim'
 "---------------------------------------------------------------------------->GO
-Plug 'fatih/vim-go', { 'for': 'go'  }
-Plug 'zchee/deoplete-go', { 'do': 'make', 'for': 'go' }
-" Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
+Plug 'fatih/vim-go'
+Plug 'zchee/deoplete-go', { 'do': 'make' }
 "---------------------------------------------------------------------------->RB
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
-" Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
+Plug 'tpope/vim-rails'
+Plug 'fishbullet/deoplete-ruby'
 "---------------------------------------------------------------------------->NG
-Plug 'chr4/nginx.vim', { 'for': 'nginx' }
+Plug 'chr4/nginx.vim'
 "---------------------------------------------------------------------------->HT
-Plug 'gregsexton/MatchTag', { 'for': 'html' }
-Plug 'othree/html5.vim', { 'for': 'html' }
+Plug 'gregsexton/MatchTag'
+Plug 'othree/html5.vim'
 "---------------------------------------------------------------------------->TS
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
+Plug 'leafgarland/typescript-vim'
+Plug 'mhartington/nvim-typescript'
 "-----------------------------------------------------------------------LOADLAST
 Plug 'ryanoasis/vim-devicons'
 
@@ -98,7 +98,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "NOTE TO SELF: do not use this, globs are slow as fuck. Use good old regex.
 "call unite#custom#source('file_rec/async,file_mru,file,buffer,grep', 'ignore_globs', ['**/bower_components/', 'node_modules/'] + split(&wildignore, ','))
 call unite#custom#source('file,file_rec,file_rec/async,file_rec/git', 'ignore_pattern', 'node_modules\|bower_components')
-" call deoplete#custom#set('_', 'converters', ['converter_auto_paren'])
+call deoplete#custom#source('_', 'converters', ['converter_auto_paren'])
 "-------------------------------------------------------------------------------
 "-------------------------------------------------------------------------------
 
@@ -351,6 +351,11 @@ set wildignore+=*.orig "Merge resolution files"
 ""------------------------------------------------------------------------------
 
 "-VARS--------------------------------------------------------------------------
+let g:deoplete#sources#ternjs#timeout = 1
+let g:deoplete#sources#ternjs#types = 1
+let g:deoplete#sources#ternjs#docs = 1
+
+
 let g:ale_linters = { 'javascript': ['eslint'] }
 let g:ale_fixers = { 'javascript': ['eslint'] }
 let g:ale_sign_error = '✖'
@@ -363,9 +368,10 @@ let g:indentLine_enabled = 0
 let g:indentLine_char = '│'
 "completion stuff
 let g:deoplete#enable_at_startup = 1
+" let g:neosnippet#enable_completed_snippet = 1
 let g:tern_request_timeout = 2
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
+" let g:tern#command = ["tern"]
+" let g:tern#arguments = ["--persistent"]
 "enable indent guides plugin at startup
 "let g:indent_guides_enable_on_vim_startup = 1
 "indent guides filetype exclusion list
